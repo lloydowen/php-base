@@ -1,6 +1,8 @@
 name: Build & Push 7.4
 on:
   push:
+    branches:
+      - master
 
 jobs:
   build:
