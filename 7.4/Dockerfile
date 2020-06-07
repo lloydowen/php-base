@@ -11,6 +11,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update -q \
       curl \
       git \
       zip unzip \
+      nano \
     && install-php-extensions \
       bcmath \
       bz2 \
@@ -30,16 +31,17 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update -q \
       xsl \
       zip \
       sockets
-# already installed:
-#      iconv \
-#      mbstring \
+
+# Use the default production configuration
+RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
+
+# Override with custom opcache settings
+COPY ./7.4/configs/opcache.ini $PHP_INI_DIR/conf.d/
 
 # Install Composer.
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
     && ln -s $(composer config --global home) /root/composer
 ENV PATH=$PATH:/root/composer/vendor/bin COMPOSER_ALLOW_SUPERUSER=1
 
-# Install prestissimo (composer plugin). Plugin that downloads packages in parallel to speed up the installation process
 # After release of Composer 2.x, remove prestissimo, because parallelism already merged into Composer 2.x branch:
-# https://github.com/composer/composer/pull/7904
 RUN composer global require hirak/prestissimo
