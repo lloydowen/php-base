@@ -36,7 +36,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update -q \
 RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 
 # Override with custom opcache settings
-COPY ./7.4/configs/opcache.ini $PHP_INI_DIR/conf.d/
+COPY ./7.4/conf/opcache.ini $PHP_INI_DIR/conf.d/
 
 # Install Composer.
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
