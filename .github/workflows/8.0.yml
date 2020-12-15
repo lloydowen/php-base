@@ -29,7 +29,6 @@ jobs:
         with:
           push: true
           file: ./8.0/Dockerfile
-          context: ./8.0/
           tags: lloydituk/php8.0-fpm:latest
       -
         name: Image digest
